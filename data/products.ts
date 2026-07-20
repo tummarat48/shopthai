@@ -10,6 +10,7 @@ export type AffiliateProduct = {
   productUrl: string;
   offerUrl: string;
   imageUrl: string;
+  img?: string;
   image: string;
   platform: 'Shopee' | 'Lazada' | 'TikTok';
 };

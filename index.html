@@ -81,9 +81,9 @@
   <script>
     // ข้อมูลสินค้าตัวอย่าง (แทนที่ด้วย API จริงได้)
     let products = [
-      { id:1, name:"หูฟังไร้สาย", price:890, platform:"Shopee", img:"https://picsum.photos/id/20/300/300", desc:"หูฟังบลูทูธ คุณภาพสูง" },
-      { id:2, name:"ครีมกันแดด", price:450, platform:"Lazada", img:"https://picsum.photos/id/201/300/300", desc:"SPF50+ กันน้ำ" },
-      { id:3, name:"เสื้อยืด oversize", price:299, platform:"TikTok", img:"https://picsum.photos/id/64/300/300", desc:"ผ้าคอตตอน 100%" },
+      { id:1, name:"หูฟังไร้สาย", price:890, platform:"Shopee", image:"https://picsum.photos/id/20/300/300", desc:"หูฟังบลูทูธ คุณภาพสูง" },
+      { id:2, name:"ครีมกันแดด", price:450, platform:"Lazada", image:"https://picsum.photos/id/201/300/300", desc:"SPF50+ กันน้ำ" },
+      { id:3, name:"เสื้อยืด oversize", price:299, platform:"TikTok", image:"https://picsum.photos/id/64/300/300", desc:"ผ้าคอตตอน 100%" },
     ];
 
     let cart = [];
@@ -94,7 +94,7 @@
       filteredProducts.forEach(p => {
         grid.innerHTML += `
           <div class="product-card bg-white rounded-2xl overflow-hidden shadow">
-            <img src="${p.img}" class="w-full h-48 object-cover">
+            <img src="${p.image}" class="w-full h-48 object-cover">
             <div class="p-4">
               <div class="text-sm text-gray-500">${p.platform}</div>
               <h3 class="font-semibold mt-1">${p.name}</h3>
@@ -137,7 +137,7 @@
         total += item.price * item.qty;
         html += `
           <div class="flex gap-4 mb-6">
-            <img src="${item.img}" class="w-20 h-20 object-cover rounded">
+            <img src="${item.image}" class="w-20 h-20 object-cover rounded">
             <div class="flex-1">
               <h4>${item.name}</h4>
               <p class="text-orange-600">${item.price} บาท</p>
