@@ -1,7 +1,6 @@
 // ✅ บรรทัดแรกสุด: นำเข้าทั้งหมดก่อน
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
 import { affiliateProducts, type AffiliateProduct } from '@/data/products';
 import AddToCartBtn from '@/components/AddProductButton';
 
