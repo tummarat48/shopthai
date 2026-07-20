@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
-import { model } from '@/lib/gemini';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getAllProducts, affiliateShops } from '@/data/products';
+
+// เริ่มต้นเชื่อมต่อ Gemini
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 export async function POST(req: Request) {
   try {
@@ -10,6 +14,7 @@ export async function POST(req: Request) {
     const allProducts = getAllProducts();
     const shops = affiliateShops;
 
+    // คำสั่งแนะนำระบบ
     const systemPrompt = `
 คุณคือผู้ช่วยแนะนำสินค้า Affiliate จาก Shopee
 หน้าที่ของคุณ:
@@ -24,9 +29,10 @@ export async function POST(req: Request) {
 ตอบด้วยภาษาไทยที่เข้าใจง่าย เป็นมิตร และแสดงลิงก์ให้ชัดเจนครับ
     `;
 
+    // ✅ แก้รูปแบบการส่งข้อความให้ถูกต้อง
     const result = await model.generateContent([
-      { role: 'user', parts: [{ text: systemPrompt }] },
-      { role: 'user', parts: [{ text: message }] },
+      systemPrompt,
+      message
     ]);
 
     const response = await result.response;
