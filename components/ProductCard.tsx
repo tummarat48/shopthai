@@ -1,51 +1,60 @@
-'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ExternalLink } from 'lucide-react';
-import { Product } from '@/data/products';
+import type { Product } from '@/data/products';
 
-export default function ProductCard({ product }: { product: Product }) {
+type Props = {
+  product: Product;
+};
+
+export default function ProductCard({ product }: Props) {
   return (
-    <div className="bg-white rounded-3xl overflow-hidden shadow hover:shadow-2xl transition-all group border border-gray-100">
+    <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
+      {/* รูปสินค้า */}
       <div className="relative h-56 bg-gray-100">
         <Image 
-          src={product.img} 
+          src={product.image} 
           alt={product.name} 
           fill 
           className="object-cover group-hover:scale-105 transition-transform duration-500" 
         />
-        <div className="absolute top-4 right-4 bg-white px-3 py-1 text-xs font-bold rounded-full text-orange-600 shadow">
-          Shopee
-        </div>
+        <span className="absolute top-3 left-3 bg-white/90 px-2 py-1 rounded text-xs font-medium">
+          {product.platform}
+        </span>
       </div>
 
-      <div className="p-6">
-        <h3 className="font-semibold text-lg leading-tight line-clamp-2 min-h-[3.2em]">
-          {product.name}
-        </h3>
-        
-        <p className="text-3xl font-bold text-orange-600 mt-4">
-          {product.price.toLocaleString()} บาท
-        </p>
+      {/* รายละเอียด */}
+      <div className="p-4">
+        <Link href={`/products/${product.id}`} className="block">
+          <h3 className="text-sm font-medium text-gray-800 line-clamp-2 mb-2 hover:text-orange-600 transition-colors">
+            {product.name}
+          </h3>
+        </Link>
 
-        <div className="flex gap-3 mt-8">
-          <Link 
-            href={`/products/${product.id}`}
-            className="flex-1 text-center border border-orange-600 text-orange-600 py-3.5 rounded-2xl hover:bg-orange-50 font-medium transition"
-          >
-            รายละเอียด
-          </Link>
-          
-          <a 
-            href={product.affiliateUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-2xl flex items-center justify-center gap-2 font-medium transition"
-          >
-            ซื้อเลย 
-            <ExternalLink size={18} />
-          </a>
+        <div className="flex items-end justify-between mb-3">
+          <div>
+            <p className="text-xl font-bold text-orange-600">
+              ฿{product.price.toLocaleString()}
+            </p>
+            <p className="text-xs text-gray-500">ขายแล้ว {product.sales}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-xs text-green-600 font-medium">
+              คอมฯ {product.commissionRate}%
+            </p>
+            <p className="text-xs text-green-600">
+              ฿{product.commissionAmount.toLocaleString()}
+            </p>
+          </div>
         </div>
+
+        <p className="text-xs text-gray-600 mb-4">ร้าน: {product.shopName}</p>
+
+        <Link
+          href={`/products/${product.id}`}
+          className="block w-full py-2 text-center bg-orange-50 hover:bg-orange-100 text-orange-600 text-sm font-medium rounded-lg transition-colors"
+        >
+          ดูรายละเอียด
+        </Link>
       </div>
     </div>
   );
