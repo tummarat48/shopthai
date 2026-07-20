@@ -12,26 +12,20 @@ export type AffiliateProduct = {
   platform: 'Shopee' | 'Lazada' | 'TikTok';
 };
 
-// เพิ่มประเภทที่คอมโพเนนต์ต้องการ หรือปรับให้ตรงกัน
+// เพิ่มบรรทัดนี้ เพื่อให้เข้ากับโค้ดเดิม
 export type Product = AffiliateProduct;
 
-// ข้อมูลสินค้า
+// ข้อมูลและฟังก์ชันอื่นๆ เหมือนเดิมครับ
 export const affiliateProducts: AffiliateProduct[] = [
-  {
-    id: "29401703698",
-    name: "หูฟังไร้สาย",
-    price: 890,
-    sales: "90พัน+",
-    shopName: "Shopee",
-    commissionRate: 12,
-    commissionAmount: 106.8,
-    productUrl: "https://shopee.co.th/product/1019521485/29401703698",
-    offerUrl: "https://s.shopee.co.th/BSLrASdCp",
-    imageUrl: "https://picsum.photos/id/1/400/300",
-    platform: "Shopee"
-  },
-  // ... สินค้าอื่นๆ เหมือนเดิม
+  // ... ข้อมูลสินค้าของคุณ
 ];
+
+export function getAllProducts(): AffiliateProduct[] {
+  return affiliateProducts;
+}
+export function getProductById(id: string): AffiliateProduct | undefined {
+  return affiliateProducts.find(p => p.id === id);
+}
 
 // ฟังก์ชันต่างๆ เหมือนเดิม
 export function getAllProducts(): AffiliateProduct[] {

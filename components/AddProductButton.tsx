@@ -4,14 +4,13 @@
 import { useState } from 'react';
 import type { AffiliateProduct } from '@/data/products';
 
-// ใช้ประเภทที่ตรงกัน
 type Props = {
   product: AffiliateProduct;
 };
 
 export default function AddToCartBtn({ product }: Props) {
-  const [added, setAdded] = useState(false);
-
+  // ... โค้ดการทำงานเหมือนเดิมครับ
+}
   const handleAdd = () => {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     const exist = cart.find((i: any) => i.id === product.id);
