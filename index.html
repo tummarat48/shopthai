@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopThai - สินค้าดีจาก TikTok Lazada Shopee</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .product-card { transition: all 0.3s; }
+    .product-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Header -->
+  <header class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <h1 class="text-2xl font-bold text-orange-600">🛒 ShopThai</h1>
+      </div>
+      <div class="flex-1 max-w-xl mx-8">
+        <div class="relative">
+          <input id="searchInput" type="text" placeholder="ค้นหาสินค้า..." 
+                 class="w-full px-4 py-3 border rounded-full focus:outline-none focus:border-orange-500">
+        </div>
+      </div>
+      <nav class="flex items-center gap-6 text-lg">
+        <a href="#" class="hover:text-orange-600">TikTok</a>
+        <a href="#" class="hover:text-orange-600">Lazada</a>
+        <a href="#" class="hover:text-orange-600">Shopee</a>
+        <button onclick="toggleCart()" class="relative">
+          <i class="fa-solid fa-cart-shopping text-2xl"></i>
+          <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-r from-orange-500 to-red-500 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <h2 class="text-5xl font-bold mb-4">ช้อปสินค้าดี ราคาโดน ไม่ต้องออกจากเว็บ!</h2>
+      <p class="text-xl mb-8">รวมสินค้ายอดนิยมจาก TikTok • Lazada • Shopee + AI แนะนำ</p>
+      <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})" 
+              class="bg-white text-orange-600 px-10 py-4 rounded-full text-xl font-semibold hover:bg-gray-100">
+        เริ่มช้อปเลย →
+      </button>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section id="products" class="max-w-7xl mx-auto px-4 py-12">
+    <h2 class="text-3xl font-bold mb-8">สินค้ายอดนิยม</h2>
+    <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <!-- JS จะใส่สินค้าที่นี่ -->
+    </div>
+  </section>
+
+  <!-- Cart Modal -->
+  <div id="cartModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white w-full max-w-lg mx-4 rounded-2xl max-h-[90vh] overflow-hidden">
+      <div class="p-6 border-b flex justify-between items-center">
+        <h3 class="text-2xl font-bold">ตะกร้าสินค้า</h3>
+        <button onclick="toggleCart()" class="text-3xl">&times;</button>
+      </div>
+      <div id="cartItems" class="p-6 overflow-auto" style="max-height: 60vh;"></div>
+      <div class="p-6 border-t">
+        <div class="flex justify-between text-xl mb-4">
+          <span>ยอดรวม</span>
+          <span id="cartTotal" class="font-bold">0 บาท</span>
+        </div>
+        <button onclick="checkout()" 
+                class="w-full bg-green-600 text-white py-4 rounded-xl text-lg font-semibold hover:bg-green-700">
+          ดำเนินการสั่งซื้อ (Affiliate)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ข้อมูลสินค้าตัวอย่าง (แทนที่ด้วย API จริงได้)
+    let products = [
+      { id:1, name:"หูฟังไร้สาย", price:890, platform:"Shopee", img:"https://picsum.photos/id/20/300/300", desc:"หูฟังบลูทูธ คุณภาพสูง" },
+      { id:2, name:"ครีมกันแดด", price:450, platform:"Lazada", img:"https://picsum.photos/id/201/300/300", desc:"SPF50+ กันน้ำ" },
+      { id:3, name:"เสื้อยืด oversize", price:299, platform:"TikTok", img:"https://picsum.photos/id/64/300/300", desc:"ผ้าคอตตอน 100%" },
+    ];
+
+    let cart = [];
+
+    function renderProducts(filteredProducts) {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+      filteredProducts.forEach(p => {
+        grid.innerHTML += `
+          <div class="product-card bg-white rounded-2xl overflow-hidden shadow">
+            <img src="${p.img}" class="w-full h-48 object-cover">
+            <div class="p-4">
+              <div class="text-sm text-gray-500">${p.platform}</div>
+              <h3 class="font-semibold mt-1">${p.name}</h3>
+              <p class="text-orange-600 font-bold text-xl mt-2">${p.price} บาท</p>
+              <button onclick="addToCart(${p.id});" 
+                      class="mt-4 w-full bg-orange-600 text-white py-3 rounded-xl hover:bg-orange-700">
+                เพิ่มในตะกร้า
+              </button>
+              <button onclick="showDetail(${p.id})" class="mt-2 w-full border border-orange-600 text-orange-600 py-3 rounded-xl">
+                ดูรายละเอียด + AI
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      cart.push({...product, qty:1});
+      updateCartCount();
+      alert('เพิ่มสินค้าแล้ว!');
+    }
+
+    function updateCartCount() {
+      document.getElementById('cartCount').textContent = cart.length;
+    }
+
+    function toggleCart() {
+      const modal = document.getElementById('cartModal');
+      modal.classList.toggle('hidden');
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItems');
+      let html = '';
+      let total = 0;
+      cart.forEach((item, index) => {
+        total += item.price * item.qty;
+        html += `
+          <div class="flex gap-4 mb-6">
+            <img src="${item.img}" class="w-20 h-20 object-cover rounded">
+            <div class="flex-1">
+              <h4>${item.name}</h4>
+              <p class="text-orange-600">${item.price} บาท</p>
+              <button onclick="removeFromCart(${index})" class="text-red-500 text-sm">ลบ</button>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html || '<p class="text-center text-gray-500 py-12">ตะกร้าว่าง</p>';
+      document.getElementById('cartTotal').textContent = total + ' บาท';
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+      updateCartCount();
+    }
+
+    function checkout() {
+      if (cart.length === 0) return;
+      alert('กำลังสร้างลิงก์ Affiliate... (ในระบบจริงจะ redirect ไปแพลตฟอร์มพร้อม tracking)');
+      // ตัวอย่าง: window.open('https://shopee.co.th/affiliate-link', '_blank');
+      cart = [];
+      toggleCart();
+      updateCartCount();
+    }
+
+    function showDetail(id) {
+      const p = products.find(prod => prod.id === id);
+      const aiDesc = `AI แนะนำ: ${p.desc} สินค้ายอดฮิตจาก ${p.platform} ราคาดีมาก คุ้มค่าแน่นอน!`;
+      alert(`รายละเอียดสินค้า: ${p.name}\n\n${aiDesc}\n\nราคา: ${p.price} บาท`);
+      // ในระบบจริงเปิด Modal สวย ๆ + ปุ่ม Add to Cart
+    }
+
+    // Search
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = products.filter(p => 
+        p.name.toLowerCase().includes(term) || p.desc.toLowerCase().includes(term)
+      );
+      renderProducts(filtered);
+    });
+
+    // Init
+    renderProducts(products);
+  </script>
+</body>
+</html>
