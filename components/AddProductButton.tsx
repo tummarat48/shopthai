@@ -4,7 +4,12 @@
 import { useState } from 'react';
 import type { AffiliateProduct } from '@/data/products';
 
-export default function AddToCartBtn({ product }: { product: AffiliateProduct }) {
+// ใช้ประเภทที่ตรงกัน
+type Props = {
+  product: AffiliateProduct;
+};
+
+export default function AddToCartBtn({ product }: Props) {
   const [added, setAdded] = useState(false);
 
   const handleAdd = () => {
@@ -14,7 +19,15 @@ export default function AddToCartBtn({ product }: { product: AffiliateProduct })
     if (exist) {
       exist.quantity += 1;
     } else {
-      cart.push({ ...product, quantity: 1 });
+      // ใช้ imageUrl ตรงกับข้อมูล
+      cart.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        offerUrl: product.offerUrl,
+        quantity: 1
+      });
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));

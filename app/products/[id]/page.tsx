@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { affiliateProducts } from '@/data/products';
-import AddToCartButton from '@/components/AddToCartButton';
+import { affiliateProducts, type AffiliateProduct } from '@/data/products';
+import AddToCartButton from '@/components/AddProductButton';
+
+// ... ส่วนอื่นๆ เหมือนเดิม
 
 export default async function ProductDetailPage({
   params,

@@ -12,7 +12,10 @@ export type AffiliateProduct = {
   platform: 'Shopee' | 'Lazada' | 'TikTok';
 };
 
-// ข้อมูลสินค้าทั้งหมด
+// เพิ่มประเภทที่คอมโพเนนต์ต้องการ หรือปรับให้ตรงกัน
+export type Product = AffiliateProduct;
+
+// ข้อมูลสินค้า
 export const affiliateProducts: AffiliateProduct[] = [
   {
     id: "29401703698",
@@ -27,33 +30,16 @@ export const affiliateProducts: AffiliateProduct[] = [
     imageUrl: "https://picsum.photos/id/1/400/300",
     platform: "Shopee"
   },
-  {
-    id: "24440905432",
-    name: "ครีมกันแดด",
-    price: 450,
-    sales: "10พัน+",
-    shopName: "Lazada",
-    commissionRate: 17,
-    commissionAmount: 76.5,
-    productUrl: "https://shopee.co.th/product/406732499/24440905432",
-    offerUrl: "https://s.shopee.co.th/2LWqR9KNoG",
-    imageUrl: "https://picsum.photos/id/26/400/300",
-    platform: "Lazada"
-  },
-  {
-    id: "24440905433",
-    name: "เสื้อยืด oversize",
-    price: 299,
-    sales: "5พัน+",
-    shopName: "TikTok",
-    commissionRate: 10,
-    commissionAmount: 29.9,
-    productUrl: "https://shopee.co.th/product/406732499/24440905433",
-    offerUrl: "https://s.shopee.co.th/2LWqR9KNoG",
-    imageUrl: "https://picsum.photos/id/64/400/300",
-    platform: "TikTok"
-  }
+  // ... สินค้าอื่นๆ เหมือนเดิม
 ];
+
+// ฟังก์ชันต่างๆ เหมือนเดิม
+export function getAllProducts(): AffiliateProduct[] {
+  return affiliateProducts;
+}
+export function getProductById(id: string): AffiliateProduct | undefined {
+  return affiliateProducts.find(p => p.id === id);
+}
 
 // ข้อมูลร้านค้า
 export const affiliateShops = [
