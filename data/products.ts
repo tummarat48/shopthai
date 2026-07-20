@@ -1,4 +1,4 @@
-// ประเภทข้อมูลสินค้าหลัก
+// ประเภทสินค้าหลัก - ต้องมีฟิลด์ครบถ้วน
 export type AffiliateProduct = {
   id: string;
   name: string;
@@ -10,20 +10,20 @@ export type AffiliateProduct = {
   productUrl: string;
   offerUrl: string;
   imageUrl: string;
-  // เพิ่มฟิลด์ image เพื่อให้เข้ากับโค้ดที่เรียกใช้
+  // ✅ เพิ่มฟิลด์ image ให้ครบ ตรงกับที่เรียกใช้
   image: string;
   platform: 'Shopee' | 'Lazada' | 'TikTok';
 };
 
-// ประเภท Product เชื่อมโยงตรงกัน
+// ประเภท Product เชื่อมโยงตรงกับ AffiliateProduct เลย
 export type Product = AffiliateProduct;
 
 // ข้อมูลร้านค้า
 export const affiliateShops = [
-  { id: "1", name: "AD เทคโนโลยีความงามและอุปกรณ์ท", maxCommission: 82, url: "https://shopee.co.th/shop/1600612362" },
+  { id: "1", name: "AD เทคโนโลยีความงามและอุปกรณ์ที่", maxCommission: 82, url: "https://shopee.co.th/shop/1600612362" },
 ];
 
-// ข้อมูลสินค้าทั้งหมด
+// ข้อมูลสินค้า - ต้องมี image เท่ากับ imageUrl ทุกอัน
 export const affiliateProducts: AffiliateProduct[] = [
   {
     id: "29401703698",
@@ -36,7 +36,7 @@ export const affiliateProducts: AffiliateProduct[] = [
     productUrl: "https://shopee.co.th/product/1019521485/29401703698",
     offerUrl: "https://s.shopee.co.th/BSLrASdCp",
     imageUrl: "https://picsum.photos/id/1/400/300",
-    // เพิ่มค่า image เท่ากับ imageUrl
+    // ✅ เพิ่มค่า image ให้ตรงกัน
     image: "https://picsum.photos/id/1/400/300",
     platform: "Shopee"
   },
@@ -70,23 +70,19 @@ export const affiliateProducts: AffiliateProduct[] = [
   }
 ];
 
-// ฟังก์ชันดึงข้อมูลสินค้า
-export function getAllProducts(): AffiliateProduct[] {
+// ฟังก์ชันดึงข้อมูล
+export function getAllProducts(): Product[] {
   return affiliateProducts;
 }
 
-export function getProductById(id: string): AffiliateProduct | undefined {
+export function getProductById(id: string): Product | undefined {
   return affiliateProducts.find(product => product.id === id);
 }
 
-export function searchProducts(keyword: string): AffiliateProduct[] {
+export function searchProducts(keyword: string): Product[] {
   const lowerKeyword = keyword.toLowerCase();
   return affiliateProducts.filter(product => 
     product.name.toLowerCase().includes(lowerKeyword) ||
     product.shopName.toLowerCase().includes(lowerKeyword)
   );
-}
-
-export function getBestSellingProducts(limit = 10): AffiliateProduct[] {
-  return affiliateProducts.slice(0, limit);
 }
