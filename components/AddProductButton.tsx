@@ -1,46 +1,58 @@
-// ✅ บรรทัดแรกสุดของไฟล์
 'use client';
 
 import { useState } from 'react';
-import type { AffiliateProduct } from '@/data/products';
+// นำเข้าประเภทให้ถูกต้อง
+import type { Product } from '@/data/products';
 
 type Props = {
-  product: AffiliateProduct;
+  product: Product;
 };
 
-export default function AddToCartBtn({ product }: Props) {
-  // ... โค้ดการทำงานเหมือนเดิมครับ
-}
-  const handleAdd = () => {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const exist = cart.find((i: any) => i.id === product.id);
+export default function AddToCartButton({ product }: Props) {
+  const [added, setAdded] = useState(false);
 
-    if (exist) {
-      exist.quantity += 1;
-    } else {
-      // ใช้ imageUrl ตรงกับข้อมูล
-      cart.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        imageUrl: product.imageUrl,
-        offerUrl: product.offerUrl,
-        quantity: 1
-      });
+  const handleAddToCart = () => {
+    try {
+      // ดึงข้อมูลตะกร้าจาก localStorage
+      const cart = JSON.parse(localStorage.getItem('shopthai_cart') || '[]');
+      
+      // ตรวจสอบว่ามีสินค้านี้แล้วหรือไม่
+      const existingIndex = cart.findIndex((item: any) => item.id === product.id);
+
+      if (existingIndex >= 0) {
+        // เพิ่มจำนวน
+        cart[existingIndex].quantity += 1;
+      } else {
+        // เพิ่มสินค้าใหม่
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          imageUrl: product.imageUrl,
+          offerUrl: product.offerUrl,
+          quantity: 1
+        });
+      }
+
+      // บันทึกกลับ
+      localStorage.setItem('shopthai_cart', JSON.stringify(cart));
+      
+      // แจ้งผลสำเร็จ
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    } catch (err) {
+      console.error('เพิ่มสินค้าไม่สำเร็จ:', err);
     }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
   };
 
   return (
     <button
-      onClick={handleAdd}
+      onClick={handleAddToCart}
       disabled={added}
-      className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors disabled:bg-green-600"
+      className="w-full py-3 bg-orange-500 hover:bg-orange-600 disabled:bg-green-500 text-white font-semibold rounded-xl transition-colors"
     >
-      {added ? '✅ เพิ่มแล้ว' : 'เพิ่มลงตะกร้า'}
+      {added ? '✅ เพิ่มลงตะกร้าแล้ว' : 'เพิ่มลงตะกร้า'}
     </button>
   );
 }
