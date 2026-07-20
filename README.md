@@ -2,6 +2,9 @@
 
 โปรเจคตัวอย่างร้านค้าออนไลน์ (Next.js + TypeScript)
 
+[![CI](https://github.com/tummarat48/shopthai/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/tummarat48/shopthai/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/tummarat48/shopthai?style=flat-square)](https://github.com/tummarat48/shopthai/releases)
+
 การใช้งานเบื้องต้น
 
 1. ติดตั้ง dependencies
